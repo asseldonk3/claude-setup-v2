@@ -36,8 +36,7 @@ chmod +x "$CLAUDE_DIR/save-screenshot.sh"
 
 # Copy commands
 echo "⚡ Installing slash commands..."
-cp commands/screenshot "$CLAUDE_DIR/commands/"
-chmod +x "$CLAUDE_DIR/commands/screenshot"
+cp commands/*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
 
 # Copy hooks (for reference, even if disabled)
 echo "🪝 Copying hook scripts (disabled by default)..."
