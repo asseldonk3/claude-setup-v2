@@ -1,0 +1,46 @@
+# Environment files
+.env
+*.env.local
+
+# API Keys and secrets
+*api_key*
+*secret*
+*token*
+
+# Logs
+logs/
+*.log
+
+# Screenshots (personal data)
+screenshots/
+*.png
+*.jpg
+*.jpeg
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# Personal configuration overrides
+settings.local.json
+*.local

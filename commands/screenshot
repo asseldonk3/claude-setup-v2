@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Claude Code slash command to save Windows clipboard screenshot
+# Usage in Claude Code: /screenshot [optional-name]
+
+# Create screenshots directory if it doesn't exist
+SCREENSHOT_DIR="$HOME/.claude/screenshots"
+mkdir -p "$SCREENSHOT_DIR"
+
+# Generate filename
+if [ -z "$1" ]; then
+    FILENAME="screenshot-$(date +%Y%m%d-%H%M%S).png"
+else
+    FILENAME="$1"
+    # Add .png extension if not present
+    [[ "$FILENAME" != *.png ]] && FILENAME="${FILENAME}.png"
+fi
+
+# Full path for the screenshot
+FILEPATH="$SCREENSHOT_DIR/$FILENAME"
+
+# Convert WSL path to Windows path
+WINDOWS_PATH=$(wslpath -w "$FILEPATH")
+
+# Save clipboard image to file using PowerShell
+powershell.exe -NoProfile -Command "
+Add-Type -AssemblyName System.Windows.Forms
+if([System.Windows.Forms.Clipboard]::ContainsImage()) {
+    \$image = [System.Windows.Forms.Clipboard]::GetImage()
+    \$image.Save('$WINDOWS_PATH', [System.Drawing.Imaging.ImageFormat]::Png)
+    exit 0
+} else {
+    exit 1
+}
+" 2>/dev/null
+
+# Check if save was successful
+if [ $? -eq 0 ]; then
+    # Output just the filepath for Claude Code to use
+    echo "$FILEPATH"
+else
+    echo "ERROR: No image in clipboard. Use Windows+Shift+S to capture first." >&2
+    exit 1
+fi
